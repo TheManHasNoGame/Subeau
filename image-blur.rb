@@ -23,24 +23,16 @@ class Image
   def blur_location (row_index, column_index)
     if @rows[row_index][column_index] == 1
       @rows_copy[row_index][column_index] = 1
-      if column_index == @rows_copy[row_index].size
-        next
-      else
+      if column_index != @rows_copy[row_index].size
         @rows_copy[row_index + 1][column_index] = 1
       end
-      if column_index == @rows_copy[row_index].size
-        next
-      else
+      if column_index != @rows_copy[row_index].size
         @rows_copy[row_index - 1][column_index] = 1
       end
-      if column_index == @rows_copy[row_index].size
-        next
-      else
+      if column_index != @rows_copy[row_index].size
         @rows_copy[row_index][column_index + 1] = 1
       end
-      if column_index == @rows_copy[row_index].size
-        next
-      else
+      if column_index != @rows_copy[row_index].size
         @rows_copy[row_index][column_index - 1] = 1
       end
     end
