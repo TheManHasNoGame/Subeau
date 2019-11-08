@@ -1,3 +1,5 @@
+#require "byebug"
+
 class Image
   def initialize(rows)
     @rows = rows
@@ -10,7 +12,9 @@ class Image
         set_zero(row_index,column_index)
       end
     end
+
     @rows.each_with_index do |row, row_index|
+# debugger
       row.each_with_index do |cell, column_index|
         blur_location(row_index,column_index)
       end
@@ -22,17 +26,21 @@ class Image
   end
   def blur_location (row_index, column_index)
     if @rows[row_index][column_index] == 1
-      @rows_copy[row_index][column_index] = 1
-      if column_index != @rows_copy[row_index].size
-        @rows_copy[row_index + 1][column_index] = 1
+        @rows_copy[row_index][column_index] = 1
+      #checks below
+      if row_index != @rows_copy[row_index].size - 1
+         @rows_copy[row_index + 1][column_index] = 1
       end
-      if column_index != @rows_copy[row_index].size
+      #checks above
+      if row_index != 0
         @rows_copy[row_index - 1][column_index] = 1
       end
-      if column_index != @rows_copy[row_index].size
+      # checks to the right
+      if column_index != @rows_copy[row_index].size - 1
         @rows_copy[row_index][column_index + 1] = 1
       end
-      if column_index != @rows_copy[row_index].size
+      #checks to the left
+      if column_index != 0
         @rows_copy[row_index][column_index - 1] = 1
       end
     end
@@ -45,10 +53,10 @@ class Image
 end
 
 image = Image.new([
+		[1, 0, 0, 1],
 		[0, 0, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 1],
-		[0, 0, 0, 0]
+		[0, 0, 0, 0],
+		[1, 0, 0, 1]
 	])
 
 image.blur
