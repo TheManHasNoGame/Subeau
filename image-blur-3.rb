@@ -1,7 +1,6 @@
-#require "byebug"
+require "byebug"
 
 class Image
-
   def initialize(rows)
     @rows = rows
   end
@@ -22,7 +21,7 @@ class Image
     end
     @rows = @rows_copy
   end
-
+   
   def blur_location (row_index, column_index)
     if @rows[row_index][column_index] == 1
         @rows_copy[row_index][column_index] = 1
@@ -44,20 +43,21 @@ class Image
       end
     end
   end
-
   def output_image
-    @rows.each do |row|
+    @rows.each_with_index do |row, row_index|
       puts row.join
     end
   end
 end
 
 image = Image.new([
-		[1, 0, 0, 1],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 0, 0, 1]
-	])
+    [0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0,],
+  ])
 
 image.blur
 image.output_image
