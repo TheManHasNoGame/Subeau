@@ -5,59 +5,43 @@ class Image
     @rows = rows
   end
 
-  def blur
-    @rows_copy = Array.new(@rows.size) {Array.new(@rows.first.size)}
-    @rows.each_with_index do |row, row_index|
-      row.each_with_index do |cell, column_index|
-        @rows_copy[row_index][column_index] = 0
-      end
+  def blur(distance=1)
+    distance.times do 
+      blur_coords
     end
+  end
 
+  def blur_coords
+    blurred_coords = []
     @rows.each_with_index do |row, row_index|
-# debugger
       row.each_with_index do |cell, column_index|
-        blur_location(row_index,column_index)
+        blurred_coords << [row_index, column_index] if cell == 1
       end
     end
-    @rows = @rows_copy
-  end
-   
-  def blur_location (row_index, column_index)
-    if @rows[row_index][column_index] == 1
-        @rows_copy[row_index][column_index] = 1
-      #checks below
-      if row_index != @rows_copy[row_index].size - 1
-         @rows_copy[row_index + 1][column_index] = 1
-      end
-      #checks above
-      if row_index != 0
-        @rows_copy[row_index - 1][column_index] = 1
-      end
-      # checks to the right
-      if column_index != @rows_copy[row_index].size - 1
-        @rows_copy[row_index][column_index + 1] = 1
-      end
-      #checks to the left
-      if column_index != 0
-        @rows_copy[row_index][column_index - 1] = 1
+# debugger
+    
+    blurred_coords.each do |coord|
+      @rows[coord[0]][coord[1] + 1] = 1 if coord[1] + 1 <= @rows[coord[0]].length - 1
+      @rows[coord[0]][coord[1] - 1] = 1 if coord[1] - 1 >= 0
+      @rows[coord[0] + 1][coord[1]] = 1 if coord[0] + 1 <= @rows.length - 1
+      @rows[coord[0] - 1][coord[1]] = 1 if coord[0] - 1 >= 0
       end
     end
-  end
   def output_image
-    @rows.each_with_index do |row, row_index|
+    @rows.each do |row|
       puts row.join
     end
   end
 end
 
 image = Image.new([
-    [0, 0, 0, 0, 0, 0,],
-    [0, 0, 0, 0, 0, 0,],
-    [0, 0, 0, 0, 0, 0,],
-    [0, 0, 0, 0, 0, 0,],
-    [0, 0, 0, 0, 0, 0,],
-    [0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1],
   ])
 
-image.blur
+image.blur(2)
 image.output_image
